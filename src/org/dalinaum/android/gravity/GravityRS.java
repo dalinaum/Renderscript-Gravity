@@ -7,6 +7,7 @@ import android.renderscript.RenderScriptGL;
 
 public class GravityRS {
     private ScriptC_gravity gravityScript;
+    private ScriptC_physics physicsScript;
 
     public void init(RenderScriptGL rs, Resources res, int width,
             int height)
@@ -27,13 +28,17 @@ public class GravityRS {
         gravityScript.set_partMesh(ms);
         gravityScript.bind_point(points);
         rs.bindRootScript(gravityScript);
-
+        
         gravityScript.invoke_initParticles();
+  
+        physicsScript = new ScriptC_physics(rs, res, R.raw.physics);
+        
+        gravityScript.set_physicsScript(physicsScript);
     }
 
     public void newTouchPosition(float x, float y, float pressure, int id)
     {
-        gravityScript.set_gTouchX(x);
-        gravityScript.set_gTouchY(y);
+    	physicsScript.set_gTouchX(x);
+    	physicsScript.set_gTouchY(y);    	
     }
 }

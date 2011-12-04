@@ -3,17 +3,13 @@
 #pragma stateFragment(parent)
 
 #include "rs_graphics.rsh"
+#include "gravity.rsh"
 
 float gTouchX = 50.f;
 float gTouchY = 50.f;
 
-typedef struct __attribute__((packed, aligned(4))) Point {
-    float2 delta;
-    float2 position;
-    uchar4 color;
-} Point_t;
 Point_t *point;
-
+rs_script physicsScript;
 rs_mesh partMesh;
 
 void initParticles() {
@@ -41,30 +37,13 @@ int root() {
     int size = rsAllocationGetDimX(rsGetAllocation(point));
     Point_t *p = point;
 
-    for (int i = 0; i < size; i++) {
-        float diff_x = gTouchX - p->position.x;
-        float diff_y = gTouchY - p->position.y;
-        float acc = 50.f / (diff_x * diff_x + diff_y * diff_y);
-        float acc_x = acc * diff_x;
-        float acc_y = acc * diff_y;
-        p->delta.x += acc_x;
-        p->delta.y += acc_y;
-        p->position.x += p->delta.x;
-        p->position.y += p->delta.y;
-        p->delta.x *= 0.96;
-        p->delta.y *= 0.96;
-        if (p->position.x > width) {
-            p->position.x = 0;
-        } else if (p->position.x < 0) {
-            p->position.x = width;
-        }
-        if (p->position.y > height) {
-            p->position.y = 0;
-        } else if (p->position.y < 0) {
-            p->position.y = height;
-        }
-        p++;
-    }
+    rs_allocation aIn, aOut;
+    aIn = rsGetAllocation(point);
+    aOut = rsGetAllocation(point);
+    ScreenInfo_t info = { .width = width, .height = height };
+    rsForEach(physicsScript, aIn, aOut, &info);
+    rsClearObject(&aIn);
+    rsClearObject(&aOut);
 
     rsgDrawMesh(partMesh);
 
