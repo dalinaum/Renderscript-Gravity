@@ -6,7 +6,7 @@ import android.renderscript.ProgramFragmentFixedFunction;
 import android.renderscript.RenderScriptGL;
 
 public class GravityRS {
-    private ScriptC_gravity mScript;
+    private ScriptC_gravity gravityScript;
 
     public void init(RenderScriptGL rs, Resources res, int width,
             int height)
@@ -23,17 +23,17 @@ public class GravityRS {
         mb.addIndexSetType(Mesh.Primitive.POINT);
         Mesh ms = mb.create();
 
-        mScript = new ScriptC_gravity(rs, res, R.raw.gravity);
-        mScript.set_partMesh(ms);
-        mScript.bind_point(points);
-        rs.bindRootScript(mScript);
+        gravityScript = new ScriptC_gravity(rs, res, R.raw.gravity);
+        gravityScript.set_partMesh(ms);
+        gravityScript.bind_point(points);
+        rs.bindRootScript(gravityScript);
 
-        mScript.invoke_initParticles();
+        gravityScript.invoke_initParticles();
     }
 
     public void newTouchPosition(float x, float y, float pressure, int id)
     {
-        mScript.set_gTouchX(x);
-        mScript.set_gTouchY(y);
+        gravityScript.set_gTouchX(x);
+        gravityScript.set_gTouchY(y);
     }
 }
