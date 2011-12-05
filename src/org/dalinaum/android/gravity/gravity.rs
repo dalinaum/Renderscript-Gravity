@@ -4,11 +4,10 @@
 
 #include "rs_graphics.rsh"
 
-static int newPart = 0;
-static int initialized = 0;
-
 float gTouchX = 50.f;
 float gTouchY = 50.f;
+int frameCount = 0;
+int frameInterval = 100;
 
 typedef struct __attribute__((packed, aligned(4))) Point {
     float2 delta;
@@ -35,7 +34,6 @@ void initParticles()
 	p->color = c;
 	p++;
     }
-    initialized = 1;
 }
 
 int root() {
@@ -73,5 +71,12 @@ int root() {
 
     rsgDrawMesh(partMesh);
 
+    frameCount++;
+    if (frameCount % frameInterval == 0) {
+	float dt = rsGetDt();
+	if (dt > 0.0f) {
+	    rsDebug("fps: ", frameInterval / dt);
+	}
+    }
     return 1;
 }
