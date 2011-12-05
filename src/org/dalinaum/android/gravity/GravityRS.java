@@ -27,13 +27,10 @@ public class GravityRS {
         gravityScript = new ScriptC_gravity(rs, res, R.raw.gravity);
         gravityScript.set_partMesh(ms);
         gravityScript.bind_point(points);
-        rs.bindRootScript(gravityScript);
-        
         gravityScript.invoke_initParticles();
-  
         physicsScript = new ScriptC_physics(rs, res, R.raw.physics);
-        
         gravityScript.set_physicsScript(physicsScript);
+        rs.bindRootScript(gravityScript);
     }
 
     public void newTouchPosition(float x, float y, float pressure, int id)

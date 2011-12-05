@@ -55,5 +55,5 @@ int root() {
 	    rsDebug("fps: ", frameInterval / dt);
 	}
     }
-    return 1;
+    return 10;
 }

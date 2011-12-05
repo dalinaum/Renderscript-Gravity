@@ -14,6 +14,7 @@ public class GravityView extends RSSurfaceView {
         super(context);
     }
 
+    @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int w,
             int h)
     {
