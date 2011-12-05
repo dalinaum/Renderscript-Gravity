@@ -4,9 +4,10 @@
 
 #include "rs_graphics.rsh"
 #include "gravity.rsh"
-
 float gTouchX = 50.f;
 float gTouchY = 50.f;
+int frameCount = 0;
+int frameInterval = 100;
 
 Point_t *point;
 rs_script physicsScript;
@@ -47,5 +48,12 @@ int root() {
 
     rsgDrawMesh(partMesh);
 
+    frameCount++;
+    if (frameCount % frameInterval == 0) {
+	float dt = rsGetDt();
+	if (dt > 0.0f) {
+	    rsDebug("fps: ", frameInterval / dt);
+	}
+    }
     return 1;
 }
